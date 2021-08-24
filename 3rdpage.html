@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Reviews System</title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <link href="reviews.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <nav class="navtop">
+            <div>
+                <h1>Product Rating System - PBL Project</h1>
+            </div>
+        </nav>
+        <div class="content home">
+            <h2>Product</h2>
+            <div class="btn">
+                <p>
+                    <a href="2ndpage.html" alt="Previous Page"><i class="arrow left"></i></a>
+                </p>
+                <div class="img">
+                    <img src="01.jpg" alt="Best Book on PHP" width="200px" />
+                </div>
+                <p>
+                    <i class="arrow right"></i>
+                </p>
+            </div>
+            <div>
+                <p id="book">
+                    Learn PHP, the programming language used to build sites like
+                    Facebook, Wikipedia and WordPress, then discover how these
+                    sites store information in a database (MySQL) and use the
+                    database to create the web pages. This full-color book is
+                    packed with inspiring code examples, infographics and
+                    photography that not only teach you the PHP language and how
+                    to work with databases, but also show you how to build new
+                    applications from scratch.
+                </p>
+            </div>
+
+            <p><strong>Check out the below reviews for this book.</strong></p>
+            <div class="reviews"></div>
+            <script>
+                const reviews_page_id = 3
+                fetch('reviews.php?page_id=' + reviews_page_id)
+                    .then((response) => response.text())
+                    .then((data) => {
+                        document.querySelector('.reviews').innerHTML = data
+                        document.querySelector(
+                            '.reviews .write_review_btn'
+                        ).onclick = (event) => {
+                            event.preventDefault()
+                            document.querySelector(
+                                '.reviews .write_review'
+                            ).style.display = 'block'
+                            document
+                                .querySelector(
+                                    ".reviews .write_review input[name='name']"
+                                )
+                                .focus()
+                        }
+                        document.querySelector(
+                            '.reviews .write_review form'
+                        ).onsubmit = (event) => {
+                            event.preventDefault()
+                            fetch('reviews.php?page_id=' + reviews_page_id, {
+                                method: 'POST',
+                                body: new FormData(
+                                    document.querySelector(
+                                        '.reviews .write_review form'
+                                    )
+                                ),
+                            })
+                                .then((response) => response.text())
+                                .then((data) => {
+                                    document.querySelector(
+                                        '.reviews .write_review'
+                                    ).innerHTML = data
+                                })
+                        }
+                    })
+            </script>
+        </div>
+    </body>
+</html>
